@@ -38,24 +38,25 @@ public class SubwayController {
 
     public void start() {
         outputView.printMainMenu();
-        MainCommand command = inputMainMenuCommand();
-        while (command.isPlayable()) {
-            if (command == MainCommand.STATION_MANAGEMENT) {
-                outputView.printStationMenu();
-                readStationCommand();
-            }
-            if (command == MainCommand.LINE_MANAGEMENT) {
-                outputView.printLineMenu();
-                readLineCommand();
-            }
-            if (command == MainCommand.SECTION_MANAGEMENT) {
-                outputView.printSectionMenu();
-                readSectionCommand();
-            }
-            if (command == MainCommand.PRINT_SUBWAY_ROUTE) {
-                outputView.printAllLine(LineRepository.lines());
-                start();
-            }
+        MainCommand command;
+        do {
+            command = inputMainMenuCommand();
+            executeCommand(command);
+        } while (command.isPlayable());
+    }
+
+    private void executeCommand(MainCommand command) {
+        if (command == MainCommand.STATION_MANAGEMENT) {
+            outputView.printStationMenu();
+            readStationCommand();
+        } else if (command == MainCommand.LINE_MANAGEMENT) {
+            outputView.printLineMenu();
+            readLineCommand();
+        } else if (command == MainCommand.SECTION_MANAGEMENT) {
+            outputView.printSectionMenu();
+            readSectionCommand();
+        } else if (command == MainCommand.PRINT_SUBWAY_ROUTE) {
+            outputView.printAllLine(LineRepository.lines());
         }
     }
 
@@ -110,6 +111,7 @@ public class SubwayController {
     private void handleStationSearch() {
         StationRepository.stations().stream()
                 .forEach(i -> outputView.printStations(i));
+        start();
     }
 
     private void handleGoMain() {
