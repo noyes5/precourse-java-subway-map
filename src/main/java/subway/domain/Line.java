@@ -68,6 +68,10 @@ public class Line {
         this.sections.remove(station);
     }
 
+    public boolean isNotRemovable() {
+        return sections.size() < MIN_REMOVABLE_LINE_SIZE;
+    }
+
     public boolean hasStation(Station station) {
         return sections.contains(station);
     }
@@ -95,9 +99,5 @@ public class Line {
                 "name='" + name + '\'' +
                 ", sections=" + sections +
                 '}';
-    }
-
-    public boolean isNotRemovable() {
-        return sections.size() < MIN_REMOVABLE_LINE_SIZE;
     }
 }

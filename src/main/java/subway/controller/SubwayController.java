@@ -193,7 +193,7 @@ public class SubwayController {
 
     private void initLine() {
         List<String> lines = List.of("2호선", "3호선", "신분당선");
-        List<List<String>> sections = Arrays.asList(List.of("교대역", "강남역"),
+        List<List<String>> sections = Arrays.asList(List.of("교대역", "강남역","역삼역"),
                 List.of("교대역", "남부터미널역", "양재역", "매봉역"), List.of("강남역", "양재역", "양재시민의숲역"));
         for (int i = 0; i < lines.size(); i++) {
             Line line = new Line(lines.get(i));
