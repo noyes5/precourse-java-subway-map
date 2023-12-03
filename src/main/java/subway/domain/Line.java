@@ -15,6 +15,7 @@ public class Line {
     public static final int MIN_SECTION = 1;
 
     private final String name;
+
     private final List<Station> sections = new LinkedList<>();
 
     public Line(String name) {
@@ -30,6 +31,10 @@ public class Line {
 
     public String getName() {
         return name;
+    }
+
+    public List<Station> getSections() {
+        return sections;
     }
 
     public boolean isEqualName(String lineName) {

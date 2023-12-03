@@ -7,6 +7,7 @@ import static subway.util.CompleteMessage.COMPLETE_SECTION_REGISTRATION;
 import static subway.util.CompleteMessage.COMPLETE_STATION_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_STATION_REGISTRATION;
 
+import java.util.List;
 import subway.domain.Line;
 import subway.domain.Station;
 
@@ -65,6 +66,28 @@ public class OutputView {
         System.out.println(COMPLETE_SECTION_DELETE.getMessage());
     }
 
+    public void printAllLine(List<Line> lines) {
+        System.out.println(Message.SUBWAY_LIST_INTRO.message);
+
+        lines.forEach(this::printLineInfo);
+    }
+
+    private void printLineInfo(Line line) {
+        System.out.println("[INFO] " + line.getName());
+        System.out.println("[INFO] ---");
+
+        printSections(line.getSections());
+        System.out.print(NEW_LINE);
+    }
+
+    private void printSections(List<Station> sections) {
+        sections.forEach(section -> printStations(section.getName()));
+    }
+
+    private void printStations(String stationsName) {
+        System.out.println("[INFO] " + stationsName);
+    }
+
     private enum Message {
         SUBWAY_MENU("## 메인 화면" + NEW_LINE
                 + "1. 역 관리" + NEW_LINE
@@ -85,7 +108,8 @@ public class OutputView {
         SECTION_MENU("## 구간 관리 화면" + NEW_LINE +
                 "1. 구간 등록" + NEW_LINE +
                 "2. 구간 삭제" + NEW_LINE +
-                "B. 돌아가기");
+                "B. 돌아가기"),
+        SUBWAY_LIST_INTRO("## 지하철 노선도");
 
         private final String message;
 

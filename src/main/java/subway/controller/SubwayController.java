@@ -52,6 +52,10 @@ public class SubwayController {
                 outputView.printSectionMenu();
                 readSectionCommand();
             }
+            if (command == MainCommand.PRINT_SUBWAY_ROUTE) {
+                outputView.printAllLine(LineRepository.lines());
+                start();
+            }
         }
     }
 
