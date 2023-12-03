@@ -6,7 +6,8 @@ public enum CompleteMessage {
     COMPLETE_LINE_REGISTRATION("지하철 노선이 등록되었습니다."),
     COMPLETE_LINE_DELETE("지하철 노선이 삭제되었습니다."),
     COMPLETE_SECTION_REGISTRATION("구간이 등록되었습니다"),
-    COMPLETE_SECTION_DELETE("구간이 삭제되었습니다.");
+    COMPLETE_SECTION_DELETE("구간이 삭제되었습니다."),
+    DEFAULT_PRINT_MESSAGE("");
 
     private String message;
     private static final String BASE_MESSAGE = "[INFO] %s";
