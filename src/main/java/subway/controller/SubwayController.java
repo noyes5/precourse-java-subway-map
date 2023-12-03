@@ -10,6 +10,7 @@ import subway.domain.Station;
 import subway.domain.StationRepository;
 import subway.domain.command.LineCommand;
 import subway.domain.command.MainCommand;
+import subway.domain.command.SectionCommand;
 import subway.domain.command.StationCommand;
 import subway.view.InputView;
 import subway.view.OutputView;
@@ -19,12 +20,14 @@ public class SubwayController {
     private final OutputView outputView;
     private final Map<StationCommand, Runnable> handlers;
     private final Map<LineCommand, Runnable> lineHandlers;
+    private final Map<SectionCommand, Runnable> sectionHandlers;
 
     public SubwayController(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.handlers = initStationHandlers();
         this.lineHandlers = initLineHandlers();
+        this.sectionHandlers = initSectionHandlers();
         initData();
     }
 
@@ -90,6 +93,22 @@ public class SubwayController {
     private void handleStationSearch() {
         StationRepository.stations().stream()
                 .forEach(i -> outputView.printStations(i));
+    }
+
+    private Map<SectionCommand, Runnable> initSectionHandlers() {
+        Map<SectionCommand, Runnable> sectionHandlers = new EnumMap<>(SectionCommand.class);
+        sectionHandlers.put(SectionCommand.SECTION_REGISTER, this::handleSectionRegistration);
+//        sectionHandlers.put(SectionCommand.SECTION_DELETE, this::handleSectionDeletion);
+        sectionHandlers.put(SectionCommand.GO_BACK, this::handleGoMain);
+        return sectionHandlers;
+    }
+
+    private void handleSectionRegistration() {
+        String lineName = inputView.readLineNameForAddSection();
+        Line line = LineRepository.getLine(lineName);
+        Station station = StationRepository.getStation(inputView.readStationNameForAddSection());
+        int index = inputView.readSectionIndex();
+        line.addSection(station, index);
     }
 
     private void handleGoMain() {

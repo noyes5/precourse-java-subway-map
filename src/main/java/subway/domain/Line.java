@@ -2,15 +2,18 @@ package subway.domain;
 
 import static subway.util.Constants.MIN_LINE_NAME_LENGTH;
 import static subway.util.ExceptionMessage.ALREADY_REGISTERED_IN_LINE;
+import static subway.util.ExceptionMessage.INVALID_SECTION_INDEX;
 import static subway.util.ExceptionMessage.INVALID_STATION_NAME_LENGTH;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 public class Line {
+    public static final int MIN_SECTION = 1;
+
     private final String name;
-    private final List<Station> sections = new ArrayList<>();
+    private final List<Station> sections = new LinkedList<>();
 
     public Line(String name) {
         validateLine(name);
@@ -36,6 +39,16 @@ public class Line {
             throw new IllegalArgumentException(ALREADY_REGISTERED_IN_LINE.getMessage());
         }
         this.sections.add(station);
+    }
+
+    public void addSection(Station station, int index) {
+        if (index < MIN_SECTION || index > sections.size()) {
+            throw new IllegalArgumentException(INVALID_SECTION_INDEX.getMessage());
+        }
+        if (sections.contains(station)) {
+            throw new IllegalArgumentException(ALREADY_REGISTERED_IN_LINE.getMessage());
+        }
+        this.sections.add(index, station);
     }
 
     public boolean hasStation(Station station) {
