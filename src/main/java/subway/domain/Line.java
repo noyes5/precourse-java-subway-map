@@ -23,4 +23,8 @@ public class Line {
         }
         this.sections.add(station);
     }
+
+    public boolean hasStation(Station station) {
+        return sections.contains(station);
+    }
 }

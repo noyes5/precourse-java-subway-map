@@ -21,5 +21,4 @@ public enum StationCommand {
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NO_SUCH_COMMAND.getMessage()));
     }
-
 }

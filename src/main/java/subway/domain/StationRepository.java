@@ -1,6 +1,7 @@
 package subway.domain;
 
 import static subway.util.ExceptionMessage.INVALID_STATION_NAME;
+import static subway.util.ExceptionMessage.STATION_DELETE_NOT_ALLOWED;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,13 @@ public class StationRepository {
     }
 
     public static boolean deleteStation(String name) {
+        Station stationToDelete = getStation(name);
+
+        for (Line line : LineRepository.lines()) {
+            if (line.hasStation(stationToDelete)) {
+                throw new IllegalArgumentException(STATION_DELETE_NOT_ALLOWED.getMessage());
+            }
+        }
         return stations.removeIf(station -> Objects.equals(station.getName(), name));
     }
 

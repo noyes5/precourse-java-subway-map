@@ -3,6 +3,8 @@ package subway.view;
 import static subway.util.CompleteMessage.COMPLETE_STATION_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_STATION_REGISTRATION;
 
+import subway.domain.Station;
+
 public class OutputView {
     private static final String NEW_LINE = System.lineSeparator();
 
@@ -24,6 +26,10 @@ public class OutputView {
 
     public void printDeleteStation() {
         System.out.println(COMPLETE_STATION_DELETE.getMessage());
+    }
+
+    public void printStations(Station station) {
+        System.out.println("[INFO] " + station.getName());
     }
 
     private enum Message {
