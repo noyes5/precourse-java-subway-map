@@ -18,14 +18,14 @@ import subway.view.OutputView;
 public class SubwayController {
     private final InputView inputView;
     private final OutputView outputView;
-    private final Map<StationCommand, Runnable> handlers;
+    private final Map<StationCommand, Runnable> stationHandlers;
     private final Map<LineCommand, Runnable> lineHandlers;
     private final Map<SectionCommand, Runnable> sectionHandlers;
 
     public SubwayController(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
-        this.handlers = initStationHandlers();
+        this.stationHandlers = initStationHandlers();
         this.lineHandlers = initLineHandlers();
         this.sectionHandlers = initSectionHandlers();
         initData();
@@ -72,7 +72,7 @@ public class SubwayController {
     private void readStationCommand() {
         try {
             StationCommand stationCommand = inputView.readStationCommand();
-            handlers.get(stationCommand).run();
+            stationHandlers.get(stationCommand).run();
         } catch (IllegalArgumentException exception) {
             outputView.printExceptionMessage(exception);
         }
@@ -88,12 +88,12 @@ public class SubwayController {
     }
 
     private Map<StationCommand, Runnable> initStationHandlers() {
-        Map<StationCommand, Runnable> handlers = new EnumMap<>(StationCommand.class);
-        handlers.put(StationCommand.STATION_REGISTER, this::handleStationRegistration);
-        handlers.put(StationCommand.STATION_DELETE, this::handleStationDeletion);
-        handlers.put(StationCommand.STATION_SEARCH, this::handleStationSearch);
-        handlers.put(StationCommand.GO_BACK, this::handleGoMain);
-        return handlers;
+        Map<StationCommand, Runnable> stationHandlers = new EnumMap<>(StationCommand.class);
+        stationHandlers.put(StationCommand.STATION_REGISTER, this::handleStationRegistration);
+        stationHandlers.put(StationCommand.STATION_DELETE, this::handleStationDeletion);
+        stationHandlers.put(StationCommand.STATION_SEARCH, this::handleStationSearch);
+        stationHandlers.put(StationCommand.GO_BACK, this::handleGoMain);
+        return stationHandlers;
     }
 
     private void handleStationRegistration() {
@@ -109,8 +109,8 @@ public class SubwayController {
     }
 
     private void handleStationSearch() {
-        StationRepository.stations().stream()
-                .forEach(i -> outputView.printStations(i));
+        StationRepository.stations()
+                .forEach(outputView::printStations);
         start();
     }
 
@@ -145,8 +145,8 @@ public class SubwayController {
     }
 
     private void handleLineSearch() {
-        LineRepository.lines().stream()
-                .forEach(i -> outputView.printLines(i));
+        LineRepository.lines()
+                .forEach(outputView::printLines);
     }
 
     private Map<SectionCommand, Runnable> initSectionHandlers() {
