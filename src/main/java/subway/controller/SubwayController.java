@@ -26,8 +26,18 @@ public class SubwayController {
         MainCommand command = inputMainMenuCommand();
         if (command.isPlayable()) {
             outputView.printStationMenu();
-            StationCommand stationCommand = inputView.readStationCommand();
+            StationCommand stationCommand = readStationCommand();
 
+        }
+    }
+
+    private StationCommand readStationCommand() {
+        while (true) {
+            try {
+                return inputView.readStationCommand();
+            } catch (IllegalArgumentException exception) {
+                outputView.printExceptionMessage(exception);
+            }
         }
     }
 
