@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import subway.domain.Line;
 import subway.domain.LineRepository;
+import subway.domain.command.MainCommand;
 import subway.domain.Station;
 import subway.domain.StationRepository;
+import subway.domain.command.StationCommand;
 import subway.view.InputView;
 import subway.view.OutputView;
 
@@ -21,9 +23,21 @@ public class SubwayController {
 
     public void start() {
         outputView.printMainMenu();
-        int command = inputView.readMainCommand();
-        if (command == 1) {
+        MainCommand command = inputMainMenuCommand();
+        if (command.isPlayable()) {
             outputView.printStationMenu();
+            StationCommand stationCommand = inputView.readStationCommand();
+
+        }
+    }
+
+    private MainCommand inputMainMenuCommand() {
+        while (true) {
+            try {
+                return inputView.readMainCommand();
+            } catch (IllegalArgumentException exception) {
+                outputView.printExceptionMessage(exception);
+            }
         }
     }
 
@@ -41,7 +55,8 @@ public class SubwayController {
 
     private void initLine() {
         List<String> lines = List.of("2호선", "3호선", "신분당선");
-        List<List<String>> sections = Arrays.asList(List.of("교대역", "강남역", "역삼역"), List.of("교대역", "남부터미널역", "양재역", "매봉역"), List.of("강남역", "양재역", "양재시민의숲역"));
+        List<List<String>> sections = Arrays.asList(List.of("교대역", "강남역", "역삼역"),
+                List.of("교대역", "남부터미널역", "양재역", "매봉역"), List.of("강남역", "양재역", "양재시민의숲역"));
         for (int i = 0; i < lines.size(); i++) {
             Line line = new Line(lines.get(i));
             addSection(sections.get(i), line);
