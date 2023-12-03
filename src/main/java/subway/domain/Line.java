@@ -27,6 +27,10 @@ public class Line {
         return name;
     }
 
+    public boolean isEqualName(String lineName) {
+        return this.name.equals(lineName);
+    }
+
     public void addSection(Station station) {
         if (sections.contains(station)) {
             throw new IllegalArgumentException(ALREADY_REGISTERED_IN_LINE.getMessage());

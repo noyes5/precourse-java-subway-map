@@ -38,6 +38,21 @@ public class InputView {
         return LineCommand.from(scanner.next());
     }
 
+    public String readFirstStation() {
+        System.out.println(Message.INPUT_LINE_FIRST_NAME_MESSAGE.message);
+        return scanner.next();
+    }
+
+    public String readLastStation() {
+        System.out.println(Message.INPUT_LINE_LAST_NAME_MESSAGE.message);
+        return scanner.next();
+    }
+
+    public String readDeleteLineName() {
+        System.out.println(Message.INPUT_DELETE_LINE_MESSAGE.message);
+        return scanner.next();
+    }
+
     private enum Message {
         INPUT_CHOICE_MENU_MESSAGE("## 원하는 기능을 선택하세요."),
         INPUT_ADD_STATION_MESSAGE("## 등록할 역 이름을 입력하세요."),

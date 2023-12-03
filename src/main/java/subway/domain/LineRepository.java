@@ -1,11 +1,11 @@
 package subway.domain;
 
 import static subway.util.ExceptionMessage.DUPLICATION_LINE_MESSAGE;
+import static subway.util.ExceptionMessage.INVALID_LINE_NAME;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class LineRepository {
     private static final List<Line> lines = new ArrayList<>();
@@ -26,8 +26,15 @@ public class LineRepository {
     }
 
     public static boolean deleteLineByName(String name) {
-        return lines.removeIf(line -> Objects.equals(line.getName(), name));
+        Line lineToRemove = getLine(name);
+        return lines.remove(lineToRemove);
     }
 
+    public static Line getLine(String lineName) {
+        return lines.stream()
+                .filter(line -> line.isEqualName(lineName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(INVALID_LINE_NAME.getMessage()));
+    }
 
 }

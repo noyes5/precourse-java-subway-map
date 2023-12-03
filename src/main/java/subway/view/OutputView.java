@@ -1,5 +1,6 @@
 package subway.view;
 
+import static subway.util.CompleteMessage.COMPLETE_LINE_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_LINE_REGISTRATION;
 import static subway.util.CompleteMessage.COMPLETE_STATION_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_STATION_REGISTRATION;
@@ -44,6 +45,10 @@ public class OutputView {
 
     public void printLines(Line line) {
         System.out.println("[INFO] " + line.getName());
+    }
+
+    public void printDeleteLine() {
+        System.out.println(COMPLETE_LINE_DELETE.getMessage());
     }
 
     private enum Message {

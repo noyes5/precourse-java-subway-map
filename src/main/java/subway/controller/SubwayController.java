@@ -99,7 +99,7 @@ public class SubwayController {
     private Map<LineCommand, Runnable> initLineHandlers() {
         Map<LineCommand, Runnable> lineHandlers = new EnumMap<>(LineCommand.class);
         lineHandlers.put(LineCommand.LINE_REGISTER, this::handleLineRegistration);
-//        lineHandlers.put(LineCommand.LINE_DELETE, this::handleLineDeletion);
+        lineHandlers.put(LineCommand.LINE_DELETE, this::handleLineDeletion);
         lineHandlers.put(LineCommand.LINE_SEARCH, this::handleLineSearch);
         lineHandlers.put(LineCommand.GO_BACK, this::handleGoMain);
         return lineHandlers;
@@ -107,8 +107,18 @@ public class SubwayController {
 
     private void handleLineRegistration() {
         String lineName = inputView.readAddLineName();
-        LineRepository.addLine(new Line(lineName));
+        Line newLine = new Line(lineName);
+        newLine.addSection(StationRepository.getStation(inputView.readFirstStation()));
+        newLine.addSection(StationRepository.getStation(inputView.readLastStation()));
+        LineRepository.addLine(newLine);
+
         outputView.printCompleteLine();
+    }
+
+    private void handleLineDeletion() {
+        String lineName = inputView.readDeleteLineName();
+        LineRepository.deleteLineByName(lineName);
+        outputView.printDeleteLine();
     }
 
     private void handleLineSearch() {
