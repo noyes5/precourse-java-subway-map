@@ -27,16 +27,15 @@ public class SubwayController {
         if (command.isPlayable()) {
             outputView.printStationMenu();
             StationCommand stationCommand = readStationCommand();
-
-        }
-    }
-
-    private StationCommand readStationCommand() {
-        while (true) {
-            try {
-                return inputView.readStationCommand();
-            } catch (IllegalArgumentException exception) {
-                outputView.printExceptionMessage(exception);
+            if (stationCommand == StationCommand.STATION_REGISTER) {
+                String stationName = inputView.readAddStationName();
+                StationRepository.addStation(new Station(stationName));
+                outputView.printCompleteStation();
+            }
+            if (stationCommand == StationCommand.STATION_DELETE) {
+                String stationName = inputView.readDeleteStationName();
+                StationRepository.deleteStation(stationName);
+                outputView.printDeleteStation();
             }
         }
     }
@@ -45,6 +44,16 @@ public class SubwayController {
         while (true) {
             try {
                 return inputView.readMainCommand();
+            } catch (IllegalArgumentException exception) {
+                outputView.printExceptionMessage(exception);
+            }
+        }
+    }
+
+    private StationCommand readStationCommand() {
+        while (true) {
+            try {
+                return inputView.readStationCommand();
             } catch (IllegalArgumentException exception) {
                 outputView.printExceptionMessage(exception);
             }

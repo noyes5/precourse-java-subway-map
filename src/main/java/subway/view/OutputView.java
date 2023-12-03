@@ -1,5 +1,8 @@
 package subway.view;
 
+import static subway.util.CompleteMessage.COMPLETE_STATION_DELETE;
+import static subway.util.CompleteMessage.COMPLETE_STATION_REGISTRATION;
+
 public class OutputView {
     private static final String NEW_LINE = System.lineSeparator();
 
@@ -13,6 +16,14 @@ public class OutputView {
 
     public void printStationMenu() {
         System.out.println(Message.STATION_MENU.message);
+    }
+
+    public void printCompleteStation() {
+        System.out.println(COMPLETE_STATION_REGISTRATION.getMessage());
+    }
+
+    public void printDeleteStation() {
+        System.out.println(COMPLETE_STATION_DELETE.getMessage());
     }
 
     private enum Message {
