@@ -1,7 +1,13 @@
 package subway.domain;
 
+import static subway.util.ExceptionMessage.DUPLICATED_STATION_IN_LINE;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Line {
-    private String name;
+    private final String name;
+    private final List<Station> sections = new ArrayList<>();
 
     public Line(String name) {
         this.name = name;
@@ -11,5 +17,10 @@ public class Line {
         return name;
     }
 
-    // 추가 기능 구현
+    public void addSection(Station station) {
+        if (sections.contains(station)) {
+            throw new IllegalArgumentException(DUPLICATED_STATION_IN_LINE.getMessage());
+        }
+        this.sections.add(station);
+    }
 }

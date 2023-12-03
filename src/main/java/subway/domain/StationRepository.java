@@ -1,5 +1,7 @@
 package subway.domain;
 
+import static subway.util.ExceptionMessage.INVALID_STATION_NAME;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,5 +20,12 @@ public class StationRepository {
 
     public static boolean deleteStation(String name) {
         return stations.removeIf(station -> Objects.equals(station.getName(), name));
+    }
+
+    public static Station getStation(String stationName) {
+        return stations.stream()
+                .filter(station -> station.isEqualName(stationName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(INVALID_STATION_NAME.getMessage()));
     }
 }
