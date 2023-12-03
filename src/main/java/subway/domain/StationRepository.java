@@ -1,5 +1,6 @@
 package subway.domain;
 
+import static subway.util.ExceptionMessage.DUPLICATED_STATION_MESSAGE;
 import static subway.util.ExceptionMessage.INVALID_STATION_NAME;
 import static subway.util.ExceptionMessage.STATION_DELETE_NOT_ALLOWED;
 
@@ -16,6 +17,9 @@ public class StationRepository {
     }
 
     public static void addStation(Station station) {
+        if (stations.contains(station)) {
+            throw new IllegalArgumentException(DUPLICATED_STATION_MESSAGE.getMessage());
+        }
         stations.add(station);
     }
 
