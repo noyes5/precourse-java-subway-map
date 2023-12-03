@@ -2,6 +2,8 @@ package subway.view;
 
 import static subway.util.CompleteMessage.COMPLETE_LINE_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_LINE_REGISTRATION;
+import static subway.util.CompleteMessage.COMPLETE_SECTION_DELETE;
+import static subway.util.CompleteMessage.COMPLETE_SECTION_REGISTRATION;
 import static subway.util.CompleteMessage.COMPLETE_STATION_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_STATION_REGISTRATION;
 
@@ -49,6 +51,18 @@ public class OutputView {
 
     public void printDeleteLine() {
         System.out.println(COMPLETE_LINE_DELETE.getMessage());
+    }
+
+    public void printSectionMenu() {
+        System.out.println(Message.SECTION_MENU.message);
+    }
+
+    public void printCompleteSection() {
+        System.out.println(COMPLETE_SECTION_REGISTRATION.getMessage());
+    }
+
+    public void printDeleteSection() {
+        System.out.println(COMPLETE_SECTION_DELETE.getMessage());
     }
 
     private enum Message {

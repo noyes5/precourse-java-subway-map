@@ -36,5 +36,4 @@ public class LineRepository {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(INVALID_LINE_NAME.getMessage()));
     }
-
 }

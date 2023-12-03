@@ -1,6 +1,7 @@
 package subway.util;
 
 public enum ExceptionMessage {
+    CANNOT_REMOVE_STATION("역의 갯수가 작아 삭제할 수 없습니다."),
     NO_SUCH_COMMAND("메뉴가 존재하지 않습니다. 메뉴 번호를 입력해주세요."),
     DUPLICATED_STATION_MESSAGE("이미 등록된 역입니다."),
     DUPLICATION_LINE_MESSAGE("이미 등록된 노선입니다."),

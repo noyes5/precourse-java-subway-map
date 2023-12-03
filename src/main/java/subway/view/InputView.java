@@ -3,6 +3,7 @@ package subway.view;
 import java.util.Scanner;
 import subway.domain.command.LineCommand;
 import subway.domain.command.MainCommand;
+import subway.domain.command.SectionCommand;
 import subway.domain.command.StationCommand;
 import subway.util.InputValidator;
 
@@ -17,6 +18,11 @@ public class InputView {
     public StationCommand readStationCommand() {
         System.out.println(Message.INPUT_CHOICE_MENU_MESSAGE.message);
         return StationCommand.from(scanner.next());
+    }
+
+    public SectionCommand readSectionCommand() {
+        System.out.println(Message.INPUT_CHOICE_MENU_MESSAGE.message);
+        return SectionCommand.from(scanner.next());
     }
 
     public String readAddStationName() {
@@ -71,6 +77,11 @@ public class InputView {
         return Integer.parseInt(input);
     }
 
+    public String readLineNameForDeleteSection() {
+        System.out.println(Message.INPUT_LINE_FOR_SECTION_DELETE_MESSAGE.message);
+        return scanner.next();
+    }
+
     private enum Message {
         INPUT_CHOICE_MENU_MESSAGE("## 원하는 기능을 선택하세요."),
         INPUT_ADD_STATION_MESSAGE("## 등록할 역 이름을 입력하세요."),
@@ -81,7 +92,9 @@ public class InputView {
         INPUT_DELETE_LINE_MESSAGE("## 삭제할 역 이름을 입력하세요."),
         INPUT_LINE_FOR_SECTION_MESSAGE("## 노선을 입력하세요."),
         INPUT_STATION_FOR_SECTION_MESSAGE("## 역이름을 입력하세요."),
-        INPUT_SECTION_ORDER_MESSAGE("## 순서를 입력하세요.");
+        INPUT_SECTION_ORDER_MESSAGE("## 순서를 입력하세요."),
+        INPUT_LINE_FOR_SECTION_DELETE_MESSAGE("## 삭제할 구간의 노선을 입력하세요."),
+        INPUT_STATION_FOR_SECTION_DELETE_MESSAGE("## 삭제할 구간의 역을 입력하세요.");
 
         private final String message;
 

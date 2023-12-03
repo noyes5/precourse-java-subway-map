@@ -48,6 +48,10 @@ public class SubwayController {
                 outputView.printLineMenu();
                 readLineCommand();
             }
+            if (command == MainCommand.SECTION_MANAGEMENT) {
+                outputView.printSectionMenu();
+                readSectionCommand();
+            }
         }
     }
 
@@ -64,6 +68,15 @@ public class SubwayController {
         try {
             StationCommand stationCommand = inputView.readStationCommand();
             handlers.get(stationCommand).run();
+        } catch (IllegalArgumentException exception) {
+            outputView.printExceptionMessage(exception);
+        }
+    }
+
+    private void readSectionCommand() {
+        try {
+            SectionCommand sectionCommand = inputView.readSectionCommand();
+            sectionHandlers.get(sectionCommand).run();
         } catch (IllegalArgumentException exception) {
             outputView.printExceptionMessage(exception);
         }
@@ -95,22 +108,6 @@ public class SubwayController {
                 .forEach(i -> outputView.printStations(i));
     }
 
-    private Map<SectionCommand, Runnable> initSectionHandlers() {
-        Map<SectionCommand, Runnable> sectionHandlers = new EnumMap<>(SectionCommand.class);
-        sectionHandlers.put(SectionCommand.SECTION_REGISTER, this::handleSectionRegistration);
-//        sectionHandlers.put(SectionCommand.SECTION_DELETE, this::handleSectionDeletion);
-        sectionHandlers.put(SectionCommand.GO_BACK, this::handleGoMain);
-        return sectionHandlers;
-    }
-
-    private void handleSectionRegistration() {
-        String lineName = inputView.readLineNameForAddSection();
-        Line line = LineRepository.getLine(lineName);
-        Station station = StationRepository.getStation(inputView.readStationNameForAddSection());
-        int index = inputView.readSectionIndex();
-        line.addSection(station, index);
-    }
-
     private void handleGoMain() {
         start();
     }
@@ -137,12 +134,40 @@ public class SubwayController {
     private void handleLineDeletion() {
         String lineName = inputView.readDeleteLineName();
         LineRepository.deleteLineByName(lineName);
+
         outputView.printDeleteLine();
     }
 
     private void handleLineSearch() {
         LineRepository.lines().stream()
                 .forEach(i -> outputView.printLines(i));
+    }
+
+    private Map<SectionCommand, Runnable> initSectionHandlers() {
+        Map<SectionCommand, Runnable> sectionHandlers = new EnumMap<>(SectionCommand.class);
+        sectionHandlers.put(SectionCommand.SECTION_REGISTER, this::handleSectionRegistration);
+        sectionHandlers.put(SectionCommand.SECTION_DELETE, this::handleSectionDeletion);
+        sectionHandlers.put(SectionCommand.GO_BACK, this::handleGoMain);
+        return sectionHandlers;
+    }
+
+    private void handleSectionRegistration() {
+        String lineName = inputView.readLineNameForAddSection();
+        Line line = LineRepository.getLine(lineName);
+        Station station = StationRepository.getStation(inputView.readStationNameForAddSection());
+        int index = inputView.readSectionIndex();
+        line.addSection(station, index);
+
+        outputView.printCompleteSection();
+    }
+
+    private void handleSectionDeletion() {
+        String lineName = inputView.readLineNameForDeleteSection();
+        Line line = LineRepository.getLine(lineName);
+        Station station = StationRepository.getStation(inputView.readStationNameForAddSection());
+        line.deleteSection(station);
+
+        outputView.printDeleteSection();
     }
 
     private MainCommand inputMainMenuCommand() {
@@ -164,7 +189,7 @@ public class SubwayController {
 
     private void initLine() {
         List<String> lines = List.of("2호선", "3호선", "신분당선");
-        List<List<String>> sections = Arrays.asList(List.of("교대역", "강남역", "역삼역"),
+        List<List<String>> sections = Arrays.asList(List.of("교대역", "강남역"),
                 List.of("교대역", "남부터미널역", "양재역", "매봉역"), List.of("강남역", "양재역", "양재시민의숲역"));
         for (int i = 0; i < lines.size(); i++) {
             Line line = new Line(lines.get(i));

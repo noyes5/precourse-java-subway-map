@@ -1,7 +1,9 @@
 package subway.domain;
 
 import static subway.util.Constants.MIN_LINE_NAME_LENGTH;
+import static subway.util.Constants.MIN_REMOVABLE_LINE_SIZE;
 import static subway.util.ExceptionMessage.ALREADY_REGISTERED_IN_LINE;
+import static subway.util.ExceptionMessage.CANNOT_REMOVE_STATION;
 import static subway.util.ExceptionMessage.INVALID_SECTION_INDEX;
 import static subway.util.ExceptionMessage.INVALID_STATION_NAME_LENGTH;
 
@@ -51,6 +53,16 @@ public class Line {
         this.sections.add(index, station);
     }
 
+    public void deleteSection(Station station) {
+        if (isNotRemovable()) {
+            throw new IllegalArgumentException(CANNOT_REMOVE_STATION.getMessage());
+        }
+        if (!sections.contains(station)) {
+            throw new IllegalArgumentException(ALREADY_REGISTERED_IN_LINE.getMessage());
+        }
+        this.sections.remove(station);
+    }
+
     public boolean hasStation(Station station) {
         return sections.contains(station);
     }
@@ -78,5 +90,9 @@ public class Line {
                 "name='" + name + '\'' +
                 ", sections=" + sections +
                 '}';
+    }
+
+    public boolean isNotRemovable() {
+        return sections.size() < MIN_REMOVABLE_LINE_SIZE;
     }
 }
