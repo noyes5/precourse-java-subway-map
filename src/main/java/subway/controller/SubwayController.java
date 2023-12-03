@@ -8,6 +8,7 @@ import subway.domain.Line;
 import subway.domain.LineRepository;
 import subway.domain.Station;
 import subway.domain.StationRepository;
+import subway.domain.command.LineCommand;
 import subway.domain.command.MainCommand;
 import subway.domain.command.StationCommand;
 import subway.view.InputView;
@@ -17,21 +18,51 @@ public class SubwayController {
     private final InputView inputView;
     private final OutputView outputView;
     private final Map<StationCommand, Runnable> handlers;
+    private final Map<LineCommand, Runnable> lineHandlers;
 
     public SubwayController(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.handlers = initStationHandlers();
+        this.lineHandlers = initLineHandlers();
         initData();
+    }
+
+    private void initData() {
+        initStation();
+        initLine();
     }
 
     public void start() {
         outputView.printMainMenu();
         MainCommand command = inputMainMenuCommand();
         while (command.isPlayable()) {
-            outputView.printStationMenu();
-            StationCommand stationCommand = readStationCommand();
+            if (command == MainCommand.STATION_MANAGEMENT) {
+                outputView.printStationMenu();
+                readStationCommand();
+            }
+            if (command == MainCommand.LINE_MANAGEMENT) {
+                outputView.printLineMenu();
+                readLineCommand();
+            }
+        }
+    }
+
+    private void readLineCommand() {
+        try {
+            LineCommand lineCommand = inputView.readLineCommand();
+            lineHandlers.get(lineCommand).run();
+        } catch (IllegalArgumentException exception) {
+            outputView.printExceptionMessage(exception);
+        }
+    }
+
+    private void readStationCommand() {
+        try {
+            StationCommand stationCommand = inputView.readStationCommand();
             handlers.get(stationCommand).run();
+        } catch (IllegalArgumentException exception) {
+            outputView.printExceptionMessage(exception);
         }
     }
 
@@ -51,13 +82,9 @@ public class SubwayController {
     }
 
     private void handleStationDeletion() {
-        try {
-            String stationName = inputView.readDeleteStationName();
-            StationRepository.deleteStation(stationName);
-            outputView.printDeleteStation();
-        } catch (IllegalArgumentException exception) {
-            outputView.printExceptionMessage(exception);
-        }
+        String stationName = inputView.readDeleteStationName();
+        StationRepository.deleteStation(stationName);
+        outputView.printDeleteStation();
     }
 
     private void handleStationSearch() {
@@ -69,6 +96,26 @@ public class SubwayController {
         start();
     }
 
+    private Map<LineCommand, Runnable> initLineHandlers() {
+        Map<LineCommand, Runnable> lineHandlers = new EnumMap<>(LineCommand.class);
+        lineHandlers.put(LineCommand.LINE_REGISTER, this::handleLineRegistration);
+//        lineHandlers.put(LineCommand.LINE_DELETE, this::handleLineDeletion);
+        lineHandlers.put(LineCommand.LINE_SEARCH, this::handleLineSearch);
+        lineHandlers.put(LineCommand.GO_BACK, this::handleGoMain);
+        return lineHandlers;
+    }
+
+    private void handleLineRegistration() {
+        String lineName = inputView.readAddLineName();
+        LineRepository.addLine(new Line(lineName));
+        outputView.printCompleteLine();
+    }
+
+    private void handleLineSearch() {
+        LineRepository.lines().stream()
+                .forEach(i -> outputView.printLines(i));
+    }
+
     private MainCommand inputMainMenuCommand() {
         while (true) {
             try {
@@ -77,21 +124,6 @@ public class SubwayController {
                 outputView.printExceptionMessage(exception);
             }
         }
-    }
-
-    private StationCommand readStationCommand() {
-        while (true) {
-            try {
-                return inputView.readStationCommand();
-            } catch (IllegalArgumentException exception) {
-                outputView.printExceptionMessage(exception);
-            }
-        }
-    }
-
-    private void initData() {
-        initStation();
-        initLine();
     }
 
     private static void initStation() {

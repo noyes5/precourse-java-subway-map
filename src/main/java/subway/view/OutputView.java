@@ -1,8 +1,10 @@
 package subway.view;
 
+import static subway.util.CompleteMessage.COMPLETE_LINE_REGISTRATION;
 import static subway.util.CompleteMessage.COMPLETE_STATION_DELETE;
 import static subway.util.CompleteMessage.COMPLETE_STATION_REGISTRATION;
 
+import subway.domain.Line;
 import subway.domain.Station;
 
 public class OutputView {
@@ -32,6 +34,18 @@ public class OutputView {
         System.out.println("[INFO] " + station.getName());
     }
 
+    public void printLineMenu() {
+        System.out.println(Message.LINE_MENU.message);
+    }
+
+    public void printCompleteLine() {
+        System.out.println(COMPLETE_LINE_REGISTRATION.getMessage());
+    }
+
+    public void printLines(Line line) {
+        System.out.println("[INFO] " + line.getName());
+    }
+
     private enum Message {
         SUBWAY_MENU("## 메인 화면" + NEW_LINE
                 + "1. 역 관리" + NEW_LINE
@@ -43,6 +57,11 @@ public class OutputView {
                 "1. 역 등록" + NEW_LINE +
                 "2. 역 삭제" + NEW_LINE +
                 "3. 역 조회" + NEW_LINE +
+                "B. 돌아가기"),
+        LINE_MENU("## 노선 관리 화면" + NEW_LINE +
+                "1. 노선 등록" + NEW_LINE +
+                "2. 노선 삭제" + NEW_LINE +
+                "3. 노선 조회" + NEW_LINE +
                 "B. 돌아가기");
 
         private final String message;
