@@ -37,9 +37,9 @@ public class SubwayController {
     }
 
     public void start() {
-        outputView.printMainMenu();
         MainCommand command;
         do {
+            outputView.printMainMenu();
             command = inputMainMenuCommand();
             executeCommand(command);
         } while (command.isPlayable());
@@ -47,17 +47,36 @@ public class SubwayController {
 
     private void executeCommand(MainCommand command) {
         if (command == MainCommand.STATION_MANAGEMENT) {
-            outputView.printStationMenu();
-            readStationCommand();
-        } else if (command == MainCommand.LINE_MANAGEMENT) {
-            outputView.printLineMenu();
-            readLineCommand();
-        } else if (command == MainCommand.SECTION_MANAGEMENT) {
-            outputView.printSectionMenu();
-            readSectionCommand();
-        } else if (command == MainCommand.PRINT_SUBWAY_ROUTE) {
-            outputView.printAllLine(LineRepository.lines());
+            executeStationManagement();
         }
+        if (command == MainCommand.LINE_MANAGEMENT) {
+            executeLineManagement();
+        }
+        if (command == MainCommand.SECTION_MANAGEMENT) {
+            executeSectionManagement();
+        }
+        if (command == MainCommand.PRINT_SUBWAY_ROUTE) {
+            executePrintSubwayRoute();
+        }
+    }
+
+    private void executeStationManagement() {
+        outputView.printStationMenu();
+        readStationCommand();
+    }
+
+    private void executeLineManagement() {
+        outputView.printLineMenu();
+        readLineCommand();
+    }
+
+    private void executeSectionManagement() {
+        outputView.printSectionMenu();
+        readSectionCommand();
+    }
+
+    private void executePrintSubwayRoute() {
+        outputView.printAllLine(LineRepository.lines());
     }
 
     private void readLineCommand() {

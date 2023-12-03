@@ -89,7 +89,7 @@ public class InputView {
         INPUT_ADD_LINE_NAME_MESSAGE("## 등록할 노선 이름을 입력하세요."),
         INPUT_LINE_FIRST_NAME_MESSAGE("## 등록할 노선의 상행 종점역 이름을 입력하세요."),
         INPUT_LINE_LAST_NAME_MESSAGE("## 등록할 노선의 하행 종점역 이름을 입력하세요."),
-        INPUT_DELETE_LINE_MESSAGE("## 삭제할 역 이름을 입력하세요."),
+        INPUT_DELETE_LINE_MESSAGE("## 삭제할 노선 이름을 입력하세요."),
         INPUT_LINE_FOR_SECTION_MESSAGE("## 노선을 입력하세요."),
         INPUT_STATION_FOR_SECTION_MESSAGE("## 역이름을 입력하세요."),
         INPUT_SECTION_ORDER_MESSAGE("## 순서를 입력하세요."),
